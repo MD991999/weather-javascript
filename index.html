@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="weather.css">
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-7 second-div">
+                <p> WEATHER</p>
+                <img class="image" src="Gliding-Parachute-Transparent.png" alt="">
+                <div class="body-container ">
+                    <div id="result1" class="bd-dark w-100 h-100 "></div>
+                    <div id="result2"></div>
+                </div>
+                <div id="haze" class=""></div>
+
+            </div>
+            <div class="col-4 third-div">
+                <form action="">
+                    <input id="input" class="w-100  input-place" type="text" placeholder="enter the place">
+                </form>
+                <button onclick="search()" class="btn btn-primary m-4 w-25"><svg xmlns="http://www.w3.org/2000/svg"
+                        width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg></button>
+                <div class="weather1" id="input1">
+                    <p class="weather-details mt-5 border-top border-light pt-5 ">Weather Details</p>
+                    <div id="result" class="w-100 h-100 "></div>
+                </div>
+            </div>
+            <!-- <p>country</p> -->
+        </div>
+    </div>
+</body>
+<script>
+    async function search() {
+        let placename = input.value
+        if (!placename) {
+            alert('please enter a place name')
+        }
+        else{
+        let data= await fetch("https://api.openweathermap.org/data/2.5/weather?q=${placename}&appid=8ac5c4d57ba6a4b3dfcf622700447b1e")
+        data.json()
+            .then((output) => displayitem(output))
+    }}
+    function displayitem(output) {
+        html_data = ``
+        html_data1 = ``
+html_data2=``
+        console.log(output);
+
+        html_data = `
+      
+        <div class="card" style="width: 18rem; bg-dark ">
+  
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">country:${output.sys.country}</li>
+
+    <li class="list-group-item">pressure:${output.main.pressure}</li>
+    <li class="list-group-item">humidity:${output.main.humidity}</li>
+    <li class="list-group-item">wind:${output.wind.speed}kmph</li>
+
+  </ul>
+</div>`
+        result.innerHTML = html_data
+        html_data1 = `
+     
+<div class="card11" style="width: 20rem; height:100px; fs-1 ">
+    <li class="list-group-item">${((output.main.temp - 273.15) * 9 / 5) + 32} deg C</li>
+
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">${output.name}</li>
+  </ul>
+</div>`
+        result1.innerHTML = html_data1
+        html_data2=`
+        <div class="card11" style="width: 20rem; height:100px; fs-1 ">
+    <li class="list-group-item">${output.weather[0].main}</li>
+</div>`
+haze.innerHTML=html_data2
+
+        
+        function clock() {
+            html_data2 = ``
+            let date = new Date()
+            console.log(date);
+            html_data2 = `${date}`
+            result2.innerHTML = html_data2
+            setTimeout(clock, 1000)
+        }
+
+        clock()
+    }
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+
+
+</html>
